@@ -1,4 +1,4 @@
-# variable_font_exp
+# Variable Font Experiments
 
 Experiments with [Source Han Sans Japanese Variable Font](https://github.com/adobe-fonts/source-han-sans)
 
