@@ -1,34 +1,8 @@
+import { wrapBySpan, convertToAbsolute } from './modules/module.js'
+
 (function() {
-    function wrapBySpan(id) {
-        const elm = document.getElementById(id)
-        elm.innerHTML = elm.innerText.replace(/(\S)/g, '<span class="weight-fade">$1</span>')
-    }
 
-    function setCurrentToAbsolute(selector) {
-        const elements = document.querySelectorAll(selector)
-        const bounds = []
-        for (const elm of elements) {
-            bounds.push(elm.getBoundingClientRect())                    
-        }
-        const elementsPositions = []
-        for (let i = 0; i < bounds.length; i++) {
-            const elm = elements[i]
-            const b = bounds[i]
-            elm.style.position = 'absolute'
-            elm.style.left = b.left + 'px'
-            elm.style.top = b.top + 'px'
-
-            elementsPositions.push({
-                element: elm,
-                // return center point
-                x: b.x + b.width * 0.5,
-                y: b.y + b.height * 0.5,
-            })
-        }
-        
-        return elementsPositions
-    }
-
+    
     async function startCamera(width, height) {
         const video = document.createElement('video')
         video.width = width
@@ -65,20 +39,20 @@
 
     async function main() {
         // Setup 
-        wrapBySpan('cursor-variable')
-        const elementsPositions = setCurrentToAbsolute('#cursor-variable span')
+        wrapBySpan('#cursor-variable')
+        const elementsPositions = convertToAbsolute('#cursor-variable span')
 
-        const width = 320 / 2
-        const height = 240 / 2
-        const { video, canvas, context } = await startCamera(width, height)
-        document.body.appendChild(canvas)
+        // const width = 320 / 2
+        // const height = 240 / 2
+        // const { video, canvas, context } = await startCamera(width, height)
+        // document.body.appendChild(canvas)
         
         const loop = () => {
             requestAnimationFrame(loop)
-            context.drawImage(video, 0, 0, width, height)
+            // context.drawImage(video, 0, 0, width, height)
 
-            const imageData = context.getImageData(0, 0, width, height)
-            const data = imageData.data
+            // const imageData = context.getImageData(0, 0, width, height)
+            // const data = imageData.data
 
             const scrollTop = document.documentElement.scrollTop
             const clientWidth = document.documentElement.clientWidth
@@ -90,11 +64,12 @@
                 if (elementX < 0 || elementX >= 1 || elementY < 0 || elementY >= 1) {
                     continue
                 }
-                const pixelX = Math.floor(elementX * width)
-                const pixelY = Math.floor(elementY * height)
+                // const pixelX = Math.floor(elementX * width)
+                // const pixelY = Math.floor(elementY * height)
                 // const brightness = getBrightness(data, (pixelY * height + pixelX) * 4)
-                const brightness = elementX
-                pos.element.style.fontWeight = (1 - brightness) * 999
+                // const brightness = elementX
+                const weight = elementX
+                pos.element.style.fontWeight = weight * 999
             }
 
             // for (let i = 0; i < data.length; i += 4) {
